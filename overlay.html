@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>BER News Ticker mit fester Uhrzeit</title>
+<style>
+  body {
+    margin: 0;
+    background: transparent;
+    overflow: hidden;
+    font-family: Impact, Impact, sans-serif;
+  }
+
+  /* Ticker mit Rahmen oben & unten */
+  .ticker {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Höhe des Tickers */
+    background-color: #c40000;
+    display: flex;
+    align-items: center;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    box-sizing: border-box;
+  }
+
+  /* Uhrzeit-Kästchen links */
+  .clock {
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    font-weight: light;
+    height: 100%;        /* volle Höhe des Tickers */
+    width: 120px;         /* feste Breite, verändert sich nicht */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;       /* nicht schrumpfen */
+    text-align: center;
+  }
+
+  /* Nachrichtenbereich */
+  .messages {
+    position: relative;
+    flex: 1;            /* Rest des Tickers */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Mittig im Ticker */
+    overflow: hidden;
+  }
+
+  .message {
+    position: absolute;
+    color: white;
+    font-size: 32px;
+    font-weight: medium;
+    opacity: 0;
+    visibility: hidden;
+    animation: fadeCycle 30s infinite;
+  }
+
+  /* Animations-Delay für jede Nachricht */
+  .message:nth-child(1) { animation-delay: 0s; }
+  .message:nth-child(2) { animation-delay: 6s; }
+  .message:nth-child(3) { animation-delay: 12s; }
+  .message:nth-child(4) { animation-delay: 18s; }
+  .message:nth-child(5) { animation-delay: 24s; }
+
+  @keyframes fadeCycle {
+    0% { opacity: 0; visibility: hidden; }
+    5% { opacity: 1; visibility: visible; }      /* Fade In */
+    20% { opacity: 1; visibility: visible; }     /* 5 Sekunden sichtbar */
+    25% { opacity: 0; visibility: hidden; }      /* Fade Out */
+    100% { opacity: 0; visibility: hidden; }     /* Pause */
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <!-- Uhrzeit-Kästchen -->
+  <div class="clock" id="clock">00:00:00</div>
+
+  <!-- Nachrichten mittig -->
+  <div class="messages">
+    <div class="message">🔴 Der BER hatte im Jahr 2025 ein Passagieraufkommen von über 26 Millionen.</div>
+    <div class="message">🔴 Der verkehrsreichste Tag war der 17. Oktober 2025 mit 102.000 Reisenden.</div>
+    <div class="message">🔴 QR 081 aus Doha planmäßige Ankunft 13:25 Uhr - Typ: B787-9</div>
+    <div class="message">🔴 Gestern 19.01.26 kamen 2 Flugzeuge des Typ A400M zum BER</div>
+    <div class="message">🔴 Ebenfalls gestern: B777-300 Turkish Airlines sowie A330-200 der NATO</div>
+  </div>
+</div>
+
+<script>
+  // Uhrzeit in Berlin anzeigen (MEZ/CEST)
+  function updateClockBerlin() {
+    const clock = document.getElementById('clock');
+    const now = new Date();
+
+    // Zeitzone Berlin
+    const options = { timeZone: 'Europe/Berlin', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const berlinTime = now.toLocaleTimeString('de-DE', options);
+
+    clock.textContent = berlinTime;
+  }
+
+  updateClockBerlin();                 // sofort beim Laden
+  setInterval(updateClockBerlin, 1000); // jede Sekunde aktualisieren
+</script>
+
+</body>
+</html>
